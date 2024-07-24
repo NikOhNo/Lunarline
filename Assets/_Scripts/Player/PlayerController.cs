@@ -12,6 +12,7 @@ public class PlayerController : MonoBehaviour
     public Rigidbody2D Rigidbody2D { get; private set; }
     public Animator Animator { get; private set; }
     public SpriteRenderer SpriteRenderer { get; private set; }
+    public Interactor Interactor { get; private set; }
 
     private PlayerInput playerInput;
     private PlayerMovement playerMovement;
@@ -21,6 +22,7 @@ public class PlayerController : MonoBehaviour
         Rigidbody2D = GetComponent<Rigidbody2D>();
         Animator = GetComponent<Animator>();
         SpriteRenderer = GetComponentInChildren<SpriteRenderer>();
+        Interactor = new();
 
         playerInput = GetComponent<PlayerInput>();
         playerMovement = new(this);
@@ -29,5 +31,13 @@ public class PlayerController : MonoBehaviour
     public void OnMove(CallbackContext context)
     {
         playerMovement.MovePlayer(context.ReadValue<Vector2>());
+    }
+
+    public void OnInteract(CallbackContext context)
+    {
+        if (context.performed)
+        {
+            Interactor.BeginInteraction();
+        }
     }
 }
